@@ -10,7 +10,10 @@ from read_files import read_question_types, read_filter_types, read_subject_type
 now = datetime.datetime.now()
 scope = ['https://spreadsheets.google.com/feeds']
 
-credentials = ServiceAccountCredentials.from_json_keyfile_name('/Users/kevindenny/Documents/django_nimbus/nimbus/nimbus-charts-00bde45ffdb8.json', scope)
+import os
+cpath = os.path.dirname(os.path.abspath(__file__))
+
+credentials = ServiceAccountCredentials.from_json_keyfile_name(cpath + '/nimbus-charts-00bde45ffdb8.json', scope)
 
 gc = gspread.authorize(credentials)
 
@@ -109,7 +112,7 @@ def get_filters(query, filters, buzz):
                         else:
                             if ph['Word_3'] in query:
                                 sel_filter = ph['Type']
-            
+
         elif '{' in ph['Options']:
             if '{' not in ph['Word_1']:
                 if (ph['Word_1'] in query):
@@ -183,7 +186,7 @@ def get_subject_words(query, subjects):
                     else:
                         if ph['Word_3'] in query:
                             sel_subject = ph['Subject']
-        
+
         if sel_subject:
             old_subject = sel_subject
             sel_subject = None
@@ -318,7 +321,7 @@ def generate_response(query_row, qf, fil, subjects):
     res_types_response = get_res_types_response(qf)
 
     response = get_subject_response(subjects, qf_response, fil_response, agg_response, res_types_response)
-    
-    
+
+
 
     return response

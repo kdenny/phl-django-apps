@@ -22,7 +22,7 @@ from post_logs import do_log_update, open_logfile_local, update_source_files
 now = datetime.datetime.now()
 
 SLACK_VERIFICATION_TOKEN = getattr(settings, 'SLACK_VERIFICATION_TOKEN', None)
-SLACK_BOT_USER_TOKEN = getattr(settings, 'SLACK_BOT_USER_TOKEN', None)                                     
+SLACK_BOT_USER_TOKEN = getattr(settings, 'SLACK_BOT_USER_TOKEN', None)
 Client = SlackClient(SLACK_BOT_USER_TOKEN)
 
 
@@ -38,7 +38,7 @@ class NLPQueryTest(APIView):
             status = 'failed'
         else:
             status = 'success'
-        
+
         status_obj = {
             'result': data,
             'status': status
@@ -50,25 +50,27 @@ class Events(APIView):
 
     def post(self, request, *args, **kwargs):
         slack_message = request.data
-        
+
         if slack_message.get('token') != SLACK_VERIFICATION_TOKEN:
             return Response(status=status.HTTP_403_FORBIDDEN)
 
         # verification challenge
-        if slack_message.get('type') == 'url_verification':        
-            return Response(data=slack_message,                    
-                            status=status.HTTP_200_OK)             
+        if slack_message.get('type') == 'url_verification':
+            return Response(data=slack_message,
+                            status=status.HTTP_200_OK)
 
-        if 'event' in slack_message:                              
-            event_message = slack_message.get('event')            
-            
+        if 'event' in slack_message:
+            event_message = slack_message.get('event')
+
             # ignore bot's own message
-            if event_message.get('subtype') == 'bot_message':     
-                return Response(status=status.HTTP_200_OK)        
-            
+            if event_message.get('subtype') == 'bot_message':
+                return Response(status=status.HTTP_200_OK)
+
             # process user's message
             user = event_message.get('user')
+            print(user)
             text = event_message.get('text')
+            print(text)
             if text:
                 text = text.encode('ascii',errors='ignore')
             channel = event_message.get('channel')
@@ -82,7 +84,7 @@ class Events(APIView):
                             'USER': user,
                             'QUERY': qc
                         }
-                        
+
                         content = parse_query(qc, user)
                         if channel == 'C7Y4UT71D':
                             chan = channel
@@ -102,29 +104,31 @@ class Events(APIView):
                                 content = "I'm not a fan."
                             elif '<@U63KE6NAD>' not in text:
                                 content = "I'm a computer. Computers don't have opinions, you ignoramus"
-                        a = Client.api_call(method='chat.postMessage',        
-                                        channel=chan,                  
+                        print(content)
+                        a = Client.api_call(method='chat.postMessage',
+                                        channel=chan,
                                         text=content)
-                        if 'https' in content:
-                            user_msg = Message(api_key="44b3fc36-d2cf-4c99-8996-ad86c5d0622b", 
-                                platform="slack",
-                                version="0.1",
-                                user_id=user,
-                                message=qc)
-                            user_msg.set_as_not_handled()
-                            user_resp = user_msg.send()
-                            print(user_resp)
-                        else:
-                            user_msg = Message(api_key="44b3fc36-d2cf-4c99-8996-ad86c5d0622b", 
-                                platform="slack",
-                                version="0.1",
-                                user_id=user,
-                                message=qc,
-                                intent="query")
-                            user_resp = user_msg.send()
-                            print(user_resp)
+                        print(a)
+                        # if 'https' in content:
+                        #     user_msg = Message(api_key="44b3fc36-d2cf-4c99-8996-ad86c5d0622b",
+                        #         platform="slack",
+                        #         version="0.1",
+                        #         user_id=user,
+                        #         message=qc)
+                            # user_msg.set_as_not_handled()
+                            # user_resp = user_msg.send()
+                            # print(user_resp)
+                        # else:
+                        #     user_msg = Message(api_key="44b3fc36-d2cf-4c99-8996-ad86c5d0622b",
+                        #         platform="slack",
+                        #         version="0.1",
+                        #         user_id=user,
+                        #         message=qc,
+                        #         intent="query")
+                            # user_resp = user_msg.send()
+                            # print(user_resp)
 
-                        # msg = Message(api_key="44b3fc36-d2cf-4c99-8996-ad86c5d0622b", 
+                        # msg = Message(api_key="44b3fc36-d2cf-4c99-8996-ad86c5d0622b",
                         #     platform="slack",
                         #     version="0.1",
                         #     user_id=user,
@@ -140,8 +144,8 @@ class Events(APIView):
                                 chan = channel
                             else:
                                 chan = 'C7WMYTFB7'
-                            a = Client.api_call(method='chat.postMessage',        
-                                            channel=chan,                  
+                            a = Client.api_call(method='chat.postMessage',
+                                            channel=chan,
                                             text=msg)
                         if 'update source files' in text.lower():
                             update_source_files()
@@ -150,11 +154,11 @@ class Events(APIView):
                                 chan = channel
                             else:
                                 chan = 'C7WMYTFB7'
-                            a = Client.api_call(method='chat.postMessage',        
-                                            channel=chan,                  
+                            a = Client.api_call(method='chat.postMessage',
+                                            channel=chan,
                                             text=msg)
 
-                        
+
                 return Response(status=status.HTTP_200_OK)
             else:
                 print("Blank?")

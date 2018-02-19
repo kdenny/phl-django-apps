@@ -29,6 +29,7 @@ ALLOWED_HOSTS = [
     'nimbuscharts.pythonanywhere.com',
     'pianomaestro.pythonanywhere.com',
     'localhost:8000',
+    'localhost:8080',
     'http://127.0.0.1:8000',
     '127.0.0.1',
     'da45b365.ngrok.io',
@@ -73,7 +74,7 @@ ROOT_URLCONF = 'piano_django.urls'
 SLACK_CLIENT_ID = '2650709258.269074527828'
 SLACK_CLIENT_SECRET = 'afdb006e7808da28bf5ecdc6a642ba91'
 SLACK_VERIFICATION_TOKEN = 'gqumiHTKoTIL6Ie4UIwCdhnQ'
-SLACK_BOT_USER_TOKEN = 'xoxp-2650709258-221412341926-270108834743-c7148476329e8be420960504e6ed84a9'
+SLACK_BOT_USER_TOKEN = 'xoxb-270108836311-ST5kCcit5zUm6rYr1DHJpdGb'
 
 TEMPLATES = [
     {

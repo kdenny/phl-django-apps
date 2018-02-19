@@ -17,8 +17,6 @@ from google.cloud import bigquery
 from pprint import pprint
 import os
 import uuid
-import geocode as gcd
-from sheets_write import write_data
 
 # from bigquery import get_client
 # import os
@@ -49,7 +47,7 @@ class AdblockRevenue(APIView):
             max_date = start_date
         else:
             max_date = end_date_delta
-        
+
         start_date = str(request.data['startDate'])
         end_date = str(request.data['endDate'])
 
@@ -64,7 +62,7 @@ class AdblockRevenue(APIView):
 
             with open("query.sql",'wb') as ofile:
                 ofile.write(qtext)
-                
+
         query_job = client.query(qtext, job_config=job_config)  # API request
         # job = client.run_async_query('fullname-age-query-job', query)
         rows = query_job.result()  # Waits for query to finish
@@ -103,7 +101,7 @@ class TrafficBreakdown(APIView):
 
         if aggregator in ['city, region, country', 'url']:
             qtext += ' ORDER BY NbrPageviews Desc LIMIT 100'
-                
+
         query_job = client.query(qtext, job_config=job_config)  # API request
         # job = client.run_async_query('fullname-age-query-job', query)
         rows = query_job.result()  # Waits for query to finish
@@ -161,7 +159,7 @@ class ContentAnalytics(APIView):
 
         # if aggregator in ['city, region, country', 'url']:
         #     qtext += ' ORDER BY NbrPageviews Desc LIMIT 100'
-                
+
         query_job = client.query(qtext, job_config=job_config)  # API request
         # job = client.run_async_query('fullname-age-query-job', query)
         rows = query_job.result()  # Waits for query to finish

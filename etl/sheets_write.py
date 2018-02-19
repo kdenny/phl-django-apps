@@ -15,7 +15,10 @@ def is_number(s):
 
 scope = ['https://spreadsheets.google.com/feeds']
 
-credentials = ServiceAccountCredentials.from_json_keyfile_name('/Users/kevindenny/Documents/django_nimbus/nimbus/nimbus-charts-00bde45ffdb8.json', scope)
+import os
+cpath = os.path.dirname(os.path.abspath(__file__))
+
+credentials = ServiceAccountCredentials.from_json_keyfile_name(cpath + '/nimbus-charts-00bde45ffdb8.json', scope)
 
 gc = gspread.authorize(credentials)
 
