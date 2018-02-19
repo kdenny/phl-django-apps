@@ -1,3 +1,7 @@
 denv/
 .sqlite3
 db.*
+*.pyc
+.idea/
+.DS_Store
+migrations/
