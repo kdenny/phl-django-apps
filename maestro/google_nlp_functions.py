@@ -17,7 +17,7 @@ client = language.LanguageServiceClient()
 # client = language.LanguageServiceClient()
 
 token_sources = []
-with open("/Users/kevindenny/Documents/django_nimbus/nimbus/piano_components/nlp_keys.csv", "rb") as sourcing:
+with open(cpath + "/piano_components/nlp_keys.csv", "rb") as sourcing:
     source_reader = csv.reader(sourcing)
     for sr in source_reader:
         token_sources.append(sr[0])
@@ -25,19 +25,19 @@ with open("/Users/kevindenny/Documents/django_nimbus/nimbus/piano_components/nlp
 all_token_types = ['entity_1','entity_2','entity_3']
 
 aggregation_list = []
-with open("/Users/kevindenny/Documents/django_nimbus/nimbus/piano_components/Aggs.csv", 'rb') as afile:
+with open(cpath + "/piano_components/Aggs.csv", 'rb') as afile:
     preader = csv.DictReader(afile)
     for prow in preader:
         aggregation_list.append(prow)
 
 subject_list = []
-with open("/Users/kevindenny/Documents/django_nimbus/nimbus/piano_components/Subjects.csv", 'rb') as pfile:
+with open(cpath + "/piano_components/Subjects.csv", 'rb') as pfile:
     preader = csv.DictReader(pfile)
     for prow in preader:
         subject_list.append(prow)
 
 buzzwords = []
-with open("/Users/kevindenny/Documents/django_nimbus/nimbus/piano_components/buzzwords.csv", 'rb') as afile:
+with open(cpath + "/piano_components/buzzwords.csv", 'rb') as afile:
     preader = csv.reader(afile)
     for prow in preader:
         buzzwords.append(prow[0])
@@ -46,7 +46,9 @@ with open("/Users/kevindenny/Documents/django_nimbus/nimbus/piano_components/buz
 def process_sentence(sentence, row):
 
     text = sentence
-    
+
+    print(text)
+
     document = types.Document(
         content=text,
         type=enums.Document.Type.PLAIN_TEXT)
@@ -60,7 +62,7 @@ def process_sentence(sentence, row):
     #     row[item] = entity.name
 
     syntax_obj = client.analyze_syntax(document=document, encoding_type='UTF32')
-    
+
     for token in syntax_obj.tokens:
         # pprint(token)
         dep_type = token_sources[token.dependency_edge.label]
@@ -111,8 +113,8 @@ def get_entities(sentence):
                    'EVENT', 'WORK_OF_ART', 'CONSUMER_GOOD', 'OTHER')
 
     entities = client.analyze_entities(document=document, encoding_type='UTF32').entities
-        
-    
+
+
     et = []
     for entity in entities:
         ef = {
@@ -121,7 +123,7 @@ def get_entities(sentence):
         }
         et.append(ef)
 
-    return et 
+    return et
 
 def check_row(query_content, subject_row):
     subj = None
@@ -136,7 +138,7 @@ def check_row(query_content, subject_row):
         for query_item in stype:
             if query_item == subject_row['Subject']:
                 subj_loc2 = subject_row['Column 2']
-                if subj_loc2 == '': 
+                if subj_loc2 == '':
                     subj = subject_row['Subject']
 
                 if subj_loc2 in query_content:
@@ -200,7 +202,7 @@ def get_query_subjects(query):
 def get_numeric_buzzwords(query_row, buzzwords):
     numeric_fields = ['age', 'hour', 'hours', 'day', 'days', 'month', 'months', 'week', 'weeks']
     number_words = ['twice', 'last']
-    
+
     nf = ''
     numb = False
     for it in query_row:
@@ -219,7 +221,7 @@ def get_numeric_buzzwords(query_row, buzzwords):
                 nb = query_row['NUM'][0]
             else:
                 nb = query_row['NUM']
-        
+
             new_buzz = "{0}-{1}".format(nf,nb)
             buzzwords.append(new_buzz)
         else:
@@ -236,10 +238,10 @@ def get_numeric_buzzwords(query_row, buzzwords):
             if nw:
                 new_buzz = "{0}-{1}".format(nw,nf)
                 buzzwords.append(new_buzz)
-            
-            
 
-            
+
+
+
 
 
     return buzzwords

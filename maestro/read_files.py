@@ -1,8 +1,11 @@
 import csv
 import pprint
 
+import os
+cpath = os.path.dirname(os.path.abspath(__file__))
+
 def read_question_types():
-    floc = '/Users/kevindenny/Documents/data-lab-prototypes/dj-app/report_query/piano_components/Question_Types.csv'
+    floc = cpath + '/piano_components/Question_Types.csv'
     question_types = []
     with open(floc,'r') as ft:
         rd = csv.DictReader(ft)
@@ -12,7 +15,7 @@ def read_question_types():
     return question_types
 
 def read_filter_types():
-    floc = '/Users/kevindenny/Documents/data-lab-prototypes/dj-app/report_query/piano_components/Filters.csv'
+    floc = cpath + '/piano_components/Filters.csv'
     filters = []
     with open(floc,'r') as ft:
         rd = csv.DictReader(ft)
@@ -22,7 +25,7 @@ def read_filter_types():
     return filters
 
 def read_subject_types():
-    floc = '/Users/kevindenny/Documents/data-lab-prototypes/dj-app/report_query/piano_components/Subject_List.csv'
+    floc = cpath + '/piano_components/Subject_List.csv'
     subs = []
     with open(floc,'r') as ft:
         rd = csv.DictReader(ft)
