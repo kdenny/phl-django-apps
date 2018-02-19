@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "nimbus-charts",
+  "private_key_id": "00bde45ffdb87d30689edb84e95096070abe508b",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCm3G6IdLHAbCGD\njDMfHoSJHkUwlT0gto2MC6egLFA6Yf7AwydlvIbpbA7QDaxdZC/I4MnS6obKdRx3\nXbniPo1pogrL4VbQB0Y7tPt2rW4nYihdzXJbgndgwC6YmB4W+9XIv/oX530FL4+X\np3zafKqnNQaxOWlwfr92K1ABiy1kuXfSU7n9jcZshgDgVcK50oKvw+q5Tvk2Z6GM\nZQnT9I1plzifd+tbxrG0w8/mI/rbz+2xnfJaJ5+wbjPbo0IYTkcgzIRjmkY3FkJ9\nVVTbtd2HRwPztzsVAOGSBSYCilADWMCSDf6VXrV5p6/5/L/D/1z9ynp+4CY8xAyW\nfO8TqbV/AgMBAAECgf99JNXBgcPOjUqVXpD4xeqg7BL4XPV7k26Vmigd+R4yq0xl\nRfhGVR7Z8jEp2Rds87bi8bRse3icXzj6TVEcXc2xa9atElQJsWr7XME8QNZcs0GT\nGIKsHy1pYrmPuIbYtgegiFsJkpQxT3piQztgoh9bSGm8gVKTDHyMI+/dOITTBQ5N\nlcFpKv9JarnMq4Dfv/bPLnWKO5nF+Hx8bicBM1hL4ayclM6t1xGuV290TAYcACWM\nsdpmMNZ7laFDeOpHMdMAeB/+YqpnLRsnHMPFWxaTkXeuOHkQCq9frcL29IzO+atD\nWfcA9gQPhDRaAIf4oFAN6QsYV8sai8RTGP2drgECgYEA6soYRPpeo+B3ZzFhhWxs\noqQeLpcJOpzj+aFp6DVftnuhVNkm0wZjGbJWOVkQ40+mZ19ju1tJVftPp+YFInlD\njw55RtM5SOTKTXXyCg8DDUX+otO7fdsMo2hs0TgII2ajFLbw95mXXqzfC6ZbNNE+\nrlQDGIH0Hx3jfgyJWKpvsbUCgYEAte9gtlnz7JuBQA/CgJO6F0zJYIFZjpdrT08X\nnQocX5momHNPM/yGmKXhbtLDyawhLuvFrYl5+M85ECl7N/Q6lSSZvPJdcZqB8exu\nEZ80Va29p3W7iNlElEZxe+7i0kKtCN8WDoKLUBq9nytbCFE1oxbQlfsS19vCEAt3\nKsr/2uMCgYEA5zp3Il+tGxmynld8oqlAaADXlKy8sxPWVX/JTJ5cD9y761MdMFCn\nAqSm1D3KKwPDbyT7lIX3uI0TSth3EBd7GIV5nO3jCc4BCr5wy8UzDTx05ak+illT\nng72tCnJoguv6nOs5zxFXkFEPTXttxun7ongrp81a/vEktwH2+GmtM0CgYEAkyjG\n33ivFslJqJmWyA21zjbsBEVcPTw5LnNZNEsDXEib2IQcon42GK7EQ7Hzb+LtDFjl\nElNK93gWPf5vjnjcEdsDB5Q7BTLmvNpyxYoy+MKJzzQptq2XDSBVlttJWK1Z7P0V\niDMLoIWgr2iQP5AAhKRln4rwWO2GcRf1EgYVIeUCgYEAirS2fqELf+MmrUlFSk0E\nco1by5ltG6AeuhWUGUMkVvTdfM19nX2e7a1eqxEs5J2KxBlvlF+uypCciBdt0f7K\nXD+elJqjBEySCWfF+WHrF3S5cEbW+QwouygSxTowLyHBrJBylAGEnw+jm2z3Cngx\nFliU0r/AxpL73xQGUbbq7g4=\n-----END PRIVATE KEY-----\n",
+  "client_email": "nimbus-charts@nimbus-charts.iam.gserviceaccount.com",
+  "client_id": "107640402632909196061",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/nimbus-charts%40nimbus-charts.iam.gserviceaccount.com"
+}

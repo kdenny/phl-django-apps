@@ -1,0 +1,123 @@
+SELECT
+  CASE
+    WHEN Rollup_Month = 1 THEN "TOTAL"
+    ELSE Month
+  END AS Month,
+  Nr_Of_Converters,
+  Nr_Of_Pageviews,
+  Nr_Of_Ad_Impressions,
+  Revenue_Based_On_CPM,
+  Revenue_Based_On_PVs
+FROM (
+  SELECT
+    Month,
+    GROUPING(Month) AS Rollup_Month,
+    SUM(Nr_Of_Converters) AS Nr_Of_Converters,
+    SUM(Nr_Of_Pageviews) AS Nr_Of_Pageviews,
+    SUM(Nr_Of_Ad_Impressions) AS Nr_Of_Ad_Impressions,
+    SUM(Revenue_Based_On_CPM) AS Revenue_Based_On_CPM,
+    SUM(Revenue_Based_On_PVs) AS Revenue_Based_On_PVs
+  FROM (
+    SELECT
+      CONCAT(STRING(Year), "/", STRING(Month_edit)) AS Month,
+      INTEGER(NbrConverters) AS Nr_Of_Converters,
+      INTEGER(NbrPVs) AS Nr_Of_Pageviews,
+      ROUND(SumOfAvgImpress*(NbrWithoutUnload + NbrWithUnload)/NbrWithUnload) AS Nr_Of_Ad_Impressions,
+      ROUND(SumOfAvgImpress*((NbrWithoutUnload + NbrWithUnload)/NbrWithUnload)/1000*{1}, 2) AS Revenue_Based_On_CPM,
+      ROUND(NbrPVs*{2}, 2) AS Revenue_Based_On_PVs
+    FROM (
+      SELECT
+        COUNT(DISTINCT PV.pageviewID) AS NbrPVs,
+        MONTH(PV.unixtimestamp) AS Month,
+        YEAR(PV.unixtimestamp) AS Year,
+        CASE
+          WHEN LENGTH(STRING(MONTH(PV.unixtimestamp))) = 1 THEN CONCAT("0", STRING(MONTH(PV.unixtimestamp)))
+          ELSE STRING(MONTH(PV.unixtimestamp))
+        END AS Month_edit,
+        CASE
+          WHEN TIMESTAMP(CONCAT(DATE(PV.unixtimestamp), TIME(PV.unixtimestamp))) >= TIMESTAMP(CONCAT(DATE(C.ConversionTime), TIME(C.ConversionTime))) AND PV.adblockerstatus=0 THEN "AfterConversion"
+          ELSE NULL
+        END AS NewRevenue,
+        SUM(A.avgImpressions) AS SumOfAvgImpress,
+        COUNT(DISTINCT PV.browserID) AS NbrConverters,
+        SUM(CASE WHEN A.url IS NULL THEN 1 END) AS NbrWithoutUnload,  
+        SUM(CASE WHEN A.url IS NOT NULL THEN 1 END) AS NbrWithUnload
+      FROM (
+        SELECT
+          unixtimestamp,
+          pageviewID,
+          browserID,
+          CASE
+            WHEN url CONTAINS "#" THEN LEFT(url, INSTR(url,"#")-1)
+            WHEN url CONTAINS "?" THEN LEFT(url, INSTR(url,"?")-1)
+            ELSE url
+          END AS url,
+          adblockerstatus
+        FROM
+          TABLE_DATE_RANGE([logs_{0}.pageviews_prod_v5_{0}_],TIMESTAMP("{3}"),TIMESTAMP("{4}"))
+        GROUP BY
+          unixtimestamp,
+          pageviewID,
+          browserID,
+          adblockerstatus,
+          url ) AS PV
+      LEFT JOIN (
+        SELECT
+          BID.browserID AS browserID,
+          FIRST(CH.unixtimestamp) AS ConversionTime
+        FROM (
+          SELECT
+            pageviewID,
+            unixtimestamp
+          FROM
+            TABLE_DATE_RANGE([logs_{0}.checkout_prod_v1_{0}_],TIMESTAMP("{3}"),TIMESTAMP("{4}"))
+          WHERE
+            screenId="COMPLETE_PURCHASE"
+            AND termId="DISABLE_ADBLOCKER") AS CH
+        LEFT JOIN (
+          SELECT
+            pageviewID,
+            browserID
+          FROM
+            TABLE_DATE_RANGE([logs_{0}.pageviews_prod_v5_{0}_],TIMESTAMP("{3}"),TIMESTAMP("{4}"))
+          GROUP BY
+            pageviewID,
+            browserID) AS BID
+        ON
+          CH.pageviewID=BID.pageviewID
+        GROUP BY
+          browserID ) AS C
+      ON
+        PV.browserID=C.browserID
+      LEFT JOIN (
+        SELECT
+          *,
+          nbrAdImpressions/unloadPvs AS avgImpressions
+        FROM (
+          SELECT
+            url,
+            COUNT(DISTINCT pageviewId) AS unloadPvs,
+            SUM(CASE
+                WHEN adsData.isEmpty IS NOT NULL THEN 1
+                ELSE 0 END) AS nbrAdImpressions
+          FROM
+            TABLE_DATE_RANGE([logs_{0}.pageunload_prod_v1_{0}_],TIMESTAMP("{3}"),TIMESTAMP("{4}"))
+          WHERE
+            adsData.eventSource = 1
+          GROUP BY
+            url)) A
+      ON
+        A.url=PV.url
+      GROUP BY
+        NewRevenue,
+        Month,
+        Year,
+        Month_edit)
+    WHERE
+      NewRevenue ="AfterConversion")
+  GROUP BY
+    ROLLUP(Month)
+  ORDER BY
+    Rollup_Month)
+ORDER BY
+  Month

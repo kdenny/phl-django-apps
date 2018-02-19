@@ -1,0 +1,11 @@
+select count(pageviewID) as NbrPageviews,
+    count(distinct browserID) as NbrBrowser,
+    count(distinct visitID) as NbrSessions,
+    url,
+    contentSection,
+    contentAuthor,
+    contentCreated
+    FROM TABLE_DATE_RANGE([logs_{0}.pageviews_prod_v5_{0}_],TIMESTAMP("{2}"), TIMESTAMP("{3}"))
+    GROUP BY url, contentSection, contentAuthor, contentCreated
+    ORDER BY NbrPageviews desc
+    LIMIT 10000

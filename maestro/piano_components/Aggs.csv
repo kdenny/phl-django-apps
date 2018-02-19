@@ -1,0 +1,27 @@
+Word,Type
+year,Time-Year
+day,Time-Day
+the day,Time-Hour
+month,Time-Month
+week,Time-Week
+hour,Time-Hour
+after,Relative Time
+percent,Relative Percent
+payment,Pivot
+locate,Geography
+europe,Geography
+california,Geography
+improve,Temporal Comparison
+frequently,Visit Frequency
+click,Bin
+long,Time
+author,Author
+compare,Comparison
+mobile,Platform
+United States,Geography
+states,Geography
+segment,Segment
+DMA,Geography
+increase,Temporal Comparison
+decrease,Temporal Comparison
+last week,Time
