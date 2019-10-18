@@ -6,7 +6,7 @@ dill==0.2.7.1
 Django==1.11.10
 django-cors-headers==2.1.0
 django-rest-framework==0.1.0
-djangorestframework==3.7.7
+djangorestframework==3.9.1
 enum34==1.1.6
 future==0.16.0
 futures==3.2.0
